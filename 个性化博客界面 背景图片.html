@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>我的网页</title>
+	<style>
+		
+		
+		/*导航栏样式*/
+header nav {
+    background-color: rgba(0,0,0,0)/*颜色*/
+    padding: 10px;/* 设置导航栏内容和边框之间的内边距*/
+    position: fixed; /*固定在页面顶部*/
+    top: 0;/* 设置导航栏距离页面顶部的距离*/
+    left: 0;/* 设置导航栏距离页面左侧的距离*/
+    width:100%;/*设置导航栏的宽度为100%*/
+    box-shadow: 60px 8px 6px rgba(0,0,0,0.3);/*置导航栏的阴影效果，60px 表示阴影的水平偏移量，8px 表示阴影的垂直偏移量，6px 表示阴影的模糊半径，rgba(0,0,0,0.3) 表示阴影的颜色和透明度，即黑色半透明。*/
+    z-index: 9999;/*设置导航栏的 z 轴位置，z-index 值越大，元素在页面上的层级就越高，9999 表示导航栏在页面上的层级很高，可以避免其他元素遮挡导航栏。*/
+}
+		
+/*所有菜单的样式*/
+.menu {
+    margin: 15;/*设置菜单周围的外边距*/
+    padding: 10;/*设置菜单项内容和边框之间的内边距为 10*/
+	
+    list-style-type: none;/*设置菜单项前面的符号为无*/
+    display: flex;/* 将菜单项的父元素设置为弹性盒子（Flexbox），这样菜单项就可以使用 Flexbox 的弹性布局来进行排列*/
+    justify-content: flex-start; /*将菜单项的排列方式设置为左对齐（即菜单项靠左侧排列），这样菜单项就会从菜单的左侧开始排列，而不是居中或右对齐。*/
+}
+
+.menu li {
+    position: relative;/*设置菜单项的定位方式为相对定位（relative），这样在后面可能会用到的绝对定位（absolute）就可以以这个相对定位的元素为参照点进行定位*/
+
+		}
+		
+.menu li a {
+    display: block;/*将链接的 display 属性设置为块级元素，这样链接就会以块级元素的方式进行布局，独占一行。*/
+    padding: 8px 50px;/*设置链接的内边距为 8px（上下）和 50px（左右），这样就会在链接文本周围留出一定的空白区域，增加可读性和美观性。*/
+   
+    color:#cb81b3;/*设置链接的文本颜色*/
+    font-weight: bold;/*将链接的字体加粗*/
+}
+		.dropdown ul li a{
+			color:#cb81b3; 
+		}	
+/*选项框样式*/
+.menu li::after {
+    content: "";/*将伪元素 ::after 的内容设置为空字符串，这样选项框就不会显示任何文本或图形。*/
+    position: absolute;/*将伪元素 ::after 的定位方式设置为绝对定位（absolute），这样就可以对选项框进行精确的定位。*/
+    top: 50%;/*将伪元素 ::after 的顶部位置设置为菜单项的中心位置（即 50%），这样选项框就可以垂直居中在菜单项的中心位置。*/
+    right: -20px;/*将伪元素 ::after 的右侧位置设置为菜单项的右侧（即在菜单项的右侧添加选项框），并且向左移动 20px，这样选项框就可以紧贴在菜单项的右侧。*/
+    transform: translateY(-50%);/*使用 CSS3 的 transform 属性将伪元素 ::after 沿垂直方向向上移动 50%（即将选项框向上移动到垂直居中位置），以达到垂直居中的效果。*/
+    width: 30px;/*将选项框的宽度设置为 30px*/
+    height: 20px;/*将选项框的高度设置为 20px*/
+    border-radius: 5px;/*将选项框的边框半径设置为 5px，即选项框的边角会变得更加圆润。*/
+    background-color:#f9c5d1; /*长方形框颜色*/
+}
+
+/*下拉菜单样式*/
+.menu li ul {
+    position: absolute;/*position: absolute; 将下拉菜单的定位方式设置为绝对定位（absolute），这样下拉菜单就可以相对于菜单项进行定位。*/
+    top: 100%;/* 将下拉菜单距离菜单项顶部的距离设置为菜单项的高度，即下拉菜单会紧贴在菜单项的底部。*/
+    left: 0;/*将下拉菜单距离菜单项左侧的距离设置为 0，即下拉菜单与菜单项左侧对齐。*/
+    z-index: 999;/*z-index: 999; 将下拉菜单的 z-index 属性设置为 999，这样下拉菜单就可以覆盖其他元素。*/
+    opacity: 0;/*将下拉菜单的不透明度设置为 0，即下拉菜单开始时不可见。*/
+    visibility: hidden;/*将下拉菜单的可见性设置为 hidden，即下拉菜单开始时不可见。*/
+    background-color:#dfd0cd; /*下拉菜单颜色*/
+    border-radius: 5px;/*设置下拉菜单的边框圆角为 5px*/
+    padding: 5px;/*设置下拉菜单的内边距为 5px*/
+
+    transition: all 0.3s;/*设置下拉菜单的过渡效果，这里设置了所有属性的过渡效果，包括位置、不透明度、可见性、背景色、边框圆角和内边距，过渡时间为 0.3 秒*/
+	
+}
+/*当鼠标悬停在菜单项上时，下拉菜单从初始的不可见状态变为可见状态，并且具有渐变的过渡效果，使用户可以更方便地浏览菜单项的子菜单。*/
+.menu li:hover ul {
+    opacity: 1;
+    visibility: visible;
+}
+
+.menu li ul li {
+    display: block;/*将每个子菜单项设置为块级元素，使其以单独的行显示*/
+    margin: 0;/*将子菜单项的外边距设置为 0，即没有外边距。*/
+    padding: 10px 25px;/*将子菜单项的内边距设置为 10 像素（上下）和 15 像素（左右），*/
+}
+
+.menu li ul li a {
+    display: block;
+    padding: 0;
+}
+
+/*“文章”“我的”下拉菜单动画效果*/
+.menu li:hover::after {
+    animation: rotateDown 0.3s ease forwards;
+}
+
+@keyframes rotateDown {
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-50%) rotate(180deg);
+    }
+}
+
+/*登录选项样式*/
+.menu li.login::after {
+    content: "";/*表示伪元素内容为空。*/
+    position: absolute;/*表示设置伪元素的定位方式为绝对定位，即相对于父元素 .menu li.login 来进行定位。*/
+    top: 50%;/*表示将伪元素向上偏移 50% 的高度，使其居中在登录选项的高度上。*/
+    right: -10px;/*表示将伪元素向右偏移 10px，使其紧贴着登录选项的右侧。*/
+    transform: translateY(-50%);/*表示使用 translateY 函数将伪元素向上移动 50% 的高度，再将其平移回来，从而实现垂直居中*/
+    width: 30px;/*表示将伪元素的宽度设为30px*/
+    height: 20px;/*表示设置伪元素的高度为 20px。*/
+    border-radius: 5px;/*表示设置伪元素的边框圆角为 5px*/
+}
+
+.menu li.login a.qq {
+    display: block;
+	width: 65px;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #cb81b3;
+    background-color: #4b4682; /*浅蓝色*/
+	border-radius: 4px;
+}
+
+.menu li.login a.wechat {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #cb81b3;
+    background-color:#36beb2; /*浅绿色*/
+	border-radius: 4px;
+}
+
+/*搜索框样式*/
+/* 搜索框样式 */
+.search-form {
+position: absolute;
+top: 50%;
+right: 20px;
+transform: translateY(-50%);
+}
+
+.search-form input[type="text"] {
+height: 30px;
+width: 300px; /* Adjust this value to make the input narrower or wider */
+padding: 5px;
+border-radius: 5px 0 0 5px;
+border: none;
+outline: none;
+float: left;
+box-sizing: border-box;
+}
+
+.search-form button[type="submit"] {
+height: 30px;
+background-color:#4b5497;
+color:;
+border-radius: 0 5px 5px 0;
+border: none;
+outline: none;
+float: left;
+padding: 0 20px;
+box-sizing: border-box;
+cursor: pointer;
+	 
+}
+   
+li ul li a{
+			 text-decoration: none;/*设置链接的下划线为无，这样就不会在链接下面出现默认的下划线。*/
+			
+		}
+		li ul li{
+			border: 3px solid #a04f7f;
+			border-top-width: 0px;
+		}
+		li.y{border-top-width: 3px}
+	body {
+  background-image:url("cc182e217a33ac02bca631157ae11b243b1dd767_raw.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+		.body {
+			display: block;
+			
+		margin-top: 300px;
+	    margin-left: 100px;
+				
+		}
+	</style>
+	
+</head>
+<body>
+	
+	<header>
+		<nav>
+			<ul class="menu">
+				<li calss="dropdown"><c><a href="https://qzs.qzone.qq.com/qzone/v6/mobile/html/index.html?from=androidgrzxpl">首页</a></c></li>
+				<li class="dropdown">
+					<c><a href="#">博客</a></c>
+					<ul>
+						<li class="y"><a href="#">文章1</a></li>
+						<li><a href="#">文章2</a></li>
+						<li><a href="#">文章3</a></li>
+						<li><a href="#">文章4</a></li>
+						<li><a href="#">文章5</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<c><a href="#">我的</a></c>
+					<ul>
+						<li class="y"><a href="https://user.qzone.qq.com/2729734812/main">我的主页</a></li>
+						<li><a href="https://user.qzone.qq.com/2729734812/infocenter?via=toolbar">个人资料</a></li>
+						<li><a href="#">账号设置</a></li>
+						<li><a href="#">退出登录</a></li>
+					</ul>
+				</li>
+				<li class="login">
+					<c><a href="#">登录</a></c>
+					<ul>
+						<li class="y"><a href="https://qzone.qq.com/" class="qq">QQ登录</a></li>
+						<li><a href="https://wx.qq.com/" class="wechat">微信登录</a></li>
+					</ul>
+				</li>
+			</ul>
+			<form class="search-form">
+				<input type="text" placeholder="搜索...">
+				<button type="submit"><li1><a href="https://www.bing.com/?mkt=zh-cn"><font color="#cb81b3">搜索</font></a></li1></button>
+			</form>
+		</nav>
+	</header>
+<script>
+// 获取需要的元素
+const menu = document.querySelector('.menu');
+const dropdown = document.querySelector('.dropdown');
+const dropdownMenu = document.querySelector('.dropdown-menu');
+const login = document.querySelector('.login');
+const qq = document.querySelector('.qq');
+const wechat = document.querySelector('.wechat');
+const searchForm = document.querySelector('.search-form');
+
+// 点击"文章"显示下拉菜单
+dropdown.addEventListener('click', function() {
+  dropdownMenu.classList.toggle('show');
+});
+
+// 点击文档任意位置关闭下拉菜单
+document.addEventListener('click', function(event) {
+  if (!event.target.matches('.dropdown') && dropdownMenu.classList.contains('show')) {
+    dropdownMenu.classList.remove('show');
+  }
+});
+
+// 点击"登录"显示登录选项框
+login.addEventListener('click', function() {
+  qq.classList.toggle('show');
+  wechat.classList.toggle('show');
+});
+
+// 点击文档任意位置关闭登录选项框
+document.addEventListener('click', function(event) {
+  if (!event.target.matches('.login') && qq.classList.contains('show') && wechat.classList.contains('show')) {
+    qq.classList.remove('show');
+    wechat.classList.remove('show');
+  }
+});
+
+
+// 固定导航栏
+window.onscroll = function() {stickyNav()};
+
+const nav = document.querySelector('nav');
+const sticky = nav.offsetTop;
+
+function stickyNav() {
+  if (window.pageYOffset >= sticky) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+}
+
+	</script>
+	
+   <div class="body">
+	   
+	   <div>
+	   
+	   <h1>
+	  欢迎来到我的个人博客界面！
+		   </h1></div>
+	<p>
+	   
+	   </p>
+	
+	</div>
+	</body>
+</html>
